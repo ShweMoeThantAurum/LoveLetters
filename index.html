@@ -1,895 +1,443 @@
 <!DOCTYPE html>
 <html lang="my">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ဘေဘီ့ ♥ မမ</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Serif+Myanmar:wght@300;400;700&family=Great+Vibes&display=swap"
-    rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy 11 Months ♡</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@300;400;500&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
   <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
     :root {
-      --cream: #fdf6ee;
-      --petal: #f7dcd0;
-      --blush: #e8a598;
-      --rose: #c96b6b;
-      --wine: #7b2d3e;
-      --dark: #1a0a10;
-      --gold: #c9a96e;
-      --gold2: #e8d5a3;
-      --font-body: 'Noto Serif Myanmar', 'Cormorant Garamond', serif;
-      --font-display: 'Great Vibes', cursive;
-      --font-serif: 'Cormorant Garamond', serif;
+      --rose:    #c8607a;
+      --rose-lt: #f5dde4;
+      --rose-dk: #7a2f41;
+      --gold:    #c9a04e;
+      --gold-lt: #f5ecd6;
+      --ink:     #2a1a1f;
+      --muted:   #7a5f66;
+      --bg:      #fdf8f5;
+      --petal1:  #e8a0b0;
+      --petal2:  #f2c4ce;
+      --petal3:  #fce8ec;
     }
 
-    *,
-    *::before,
-    *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
-      background: var(--dark);
-      color: var(--cream);
-      font-family: var(--font-body);
+      background: var(--bg);
+      font-family: 'Noto Sans Myanmar', 'Crimson Pro', Georgia, serif;
+      color: var(--ink);
+      min-height: 100vh;
       overflow-x: hidden;
     }
 
-    /* ── STARFIELD ── */
-    #starfield {
+    /* ── Floating petals ── */
+    .petal-canvas {
       position: fixed;
       inset: 0;
+      pointer-events: none;
       z-index: 0;
-      pointer-events: none;
-    }
-
-    /* ── HERO ── */
-    #hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 1;
       overflow: hidden;
-    }
-
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse 80% 70% at 50% 60%, #4a1020 0%, #1a0a10 70%);
-    }
-
-    .hero-petals {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
     }
 
     .petal {
       position: absolute;
-      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      border-radius: 60% 40% 60% 40%;
       opacity: 0;
+      animation: fall linear infinite;
     }
 
-    .hero-content {
-      position: relative;
-      text-align: center;
-      z-index: 2;
-      padding: 2rem 1.5rem;
-      width: 100%;
-      max-width: 700px;
+    @keyframes fall {
+      0%   { transform: translateY(-40px) rotate(0deg); opacity: 0; }
+      5%   { opacity: 0.6; }
+      90%  { opacity: 0.4; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
     }
 
-    .hero-subtitle {
-      font-family: var(--font-serif);
-      font-size: clamp(0.75rem, 2.5vw, 1.05rem);
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      color: var(--gold);
-      opacity: 0;
-      transform: translateY(20px);
-      margin-bottom: 1.2rem;
-    }
-
-    .hero-title {
-      font-family: var(--font-display);
-      font-size: clamp(3.5rem, 13vw, 9rem);
-      color: var(--cream);
-      line-height: 1;
-      opacity: 0;
-      transform: translateY(30px);
-      text-shadow: 0 0 60px rgba(201, 107, 107, .5), 0 0 120px rgba(201, 107, 107, .2);
-    }
-
-    .hero-myanmar {
-      font-family: var(--font-body);
-      font-size: clamp(0.9rem, 3vw, 1.4rem);
-      color: var(--petal);
-      margin-top: 1.2rem;
-      letter-spacing: 0.1em;
-      opacity: 0;
-      transform: translateY(20px);
-    }
-
-    .hero-line {
-      width: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-      margin: 1.8rem auto;
-    }
-
-    .scroll-cue {
-      position: absolute;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      opacity: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      font-family: var(--font-serif);
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      color: var(--gold);
-      text-transform: uppercase;
-    }
-
-    .scroll-arrow {
-      width: 1px;
-      height: 36px;
-      background: linear-gradient(180deg, var(--gold), transparent);
-      animation: scrollPulse 2s ease-in-out infinite;
-    }
-
-    @keyframes scrollPulse {
-
-      0%,
-      100% {
-        opacity: .3;
-        transform: scaleY(1);
-      }
-
-      50% {
-        opacity: 1;
-        transform: scaleY(1.15);
-      }
-    }
-
-    /* ── TIMELINE ── */
-    #timeline {
+    /* ── Hero ── */
+    .hero {
       position: relative;
       z-index: 1;
-      padding: 6rem 0 4rem;
-    }
-
-    .section-header {
-      text-align: center;
-      margin-bottom: 5rem;
-      padding: 0 1.5rem;
-    }
-
-    .section-header h2 {
-      font-family: var(--font-display);
-      font-size: clamp(2.2rem, 6vw, 4.5rem);
-      color: var(--cream);
-      margin-bottom: 0.4rem;
-    }
-
-    .section-header p {
-      font-family: var(--font-serif);
-      font-size: 0.9rem;
-      color: var(--gold);
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-    }
-
-    /* Desktop spine — center */
-    .timeline-spine {
-      position: absolute;
-      left: 50%;
-      top: 0;
-      bottom: 0;
-      width: 1px;
-      background: linear-gradient(180deg, transparent 0%, var(--wine) 8%, var(--wine) 92%, transparent 100%);
-      transform: translateX(-50%);
-    }
-
-    /* Desktop letter block */
-    .letter-block {
-      position: relative;
-      display: grid;
-      grid-template-columns: 1fr 80px 1fr;
-      align-items: start;
-      margin-bottom: 5rem;
-      padding: 0 4%;
-      opacity: 0;
-      transform: translateY(50px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
-    }
-
-    .letter-block.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .timeline-node {
-      grid-column: 2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-top: 1.8rem;
-    }
-
-    .node-dot {
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: var(--rose);
-      border: 3px solid var(--dark);
-      box-shadow: 0 0 0 2px var(--wine), 0 0 20px rgba(201, 107, 107, .6);
-      position: relative;
-      z-index: 2;
-    }
-
-    .node-month {
-      font-family: var(--font-serif);
-      font-size: 0.68rem;
-      letter-spacing: 0.2em;
-      color: var(--gold);
-      text-transform: uppercase;
-      margin-top: 0.4rem;
-      white-space: nowrap;
-    }
-
-    /* Card */
-    .card {
-      background: linear-gradient(135deg, rgba(122, 45, 62, .18) 0%, rgba(26, 10, 16, .7) 100%);
-      border: 1px solid rgba(201, 107, 107, .2);
-      border-radius: 3px;
-      padding: 2rem 1.8rem 1.6rem;
-      position: relative;
-      overflow: hidden;
-      backdrop-filter: blur(8px);
-      transition: border-color .4s, box-shadow .4s, transform .4s;
-    }
-
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--rose), transparent);
-      opacity: .6;
-    }
-
-    .card:hover {
-      border-color: rgba(201, 107, 107, .45);
-      box-shadow: 0 12px 55px rgba(122, 45, 62, .35);
-      transform: translateY(-3px);
-    }
-
-    .card-ornament {
-      font-family: var(--font-display);
-      font-size: 3.5rem;
-      color: rgba(201, 107, 107, .1);
-      position: absolute;
-      top: .4rem;
-      right: 1rem;
-      line-height: 1;
-      pointer-events: none;
-      user-select: none;
-    }
-
-    .card-month {
-      font-family: var(--font-serif);
-      font-size: .68rem;
-      letter-spacing: .35em;
-      color: var(--blush);
-      text-transform: uppercase;
-      margin-bottom: .7rem;
-    }
-
-    .card-heading {
-      font-family: var(--font-display);
-      font-size: clamp(1.5rem, 3.5vw, 2.1rem);
-      color: var(--cream);
-      margin-bottom: 1rem;
-      line-height: 1.1;
-    }
-
-    .card-divider {
-      width: 38px;
-      height: 1px;
-      background: linear-gradient(90deg, var(--gold), transparent);
-      margin-bottom: 1rem;
-    }
-
-    .card-text {
-      font-family: var(--font-body);
-      font-size: clamp(.82rem, 1.8vw, .9rem);
-      line-height: 2;
-      color: rgba(253, 246, 238, .82);
-      position: relative;
-      z-index: 1;
-    }
-
-    .card-text p+p {
-      margin-top: .85rem;
-    }
-
-    .card-closing {
-      margin-top: 1.4rem;
-      padding-top: 1.1rem;
-      border-top: 1px solid rgba(201, 107, 107, .15);
-      font-family: var(--font-serif);
-      font-style: italic;
-      font-size: .8rem;
-      color: var(--blush);
-      letter-spacing: .04em;
-    }
-
-    .card-signature {
-      margin-top: .4rem;
-      font-family: var(--font-display);
-      font-size: 1.35rem;
-      color: var(--gold);
-    }
-
-    /* ── COPY BUTTON ── */
-    .copy-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: .45rem;
-      margin-top: 1.2rem;
-      padding: .5rem 1.1rem;
-      background: transparent;
-      border: 1px solid rgba(201, 107, 107, .35);
-      border-radius: 2rem;
-      color: var(--blush);
-      font-family: var(--font-serif);
-      font-size: .75rem;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: background .3s, border-color .3s, color .3s, transform .2s;
-      position: relative;
-      z-index: 2;
-      /* Ensure touch targets are big enough */
-      min-height: 40px;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .copy-btn svg {
-      width: 13px;
-      height: 13px;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      flex-shrink: 0;
-      transition: transform .3s;
-    }
-
-    .copy-btn:hover,
-    .copy-btn:focus-visible {
-      background: rgba(201, 107, 107, .12);
-      border-color: rgba(201, 107, 107, .6);
-      color: var(--cream);
-      transform: translateY(-1px);
-      outline: none;
-    }
-
-    .copy-btn:hover svg {
-      transform: scale(1.15);
-    }
-
-    .copy-btn.copied {
-      background: rgba(201, 107, 107, .2);
-      border-color: var(--rose);
-      color: var(--gold2);
-    }
-
-    /* ── TOAST ── */
-    #toast {
-      position: fixed;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%) translateY(20px);
-      background: rgba(122, 45, 62, .95);
-      border: 1px solid rgba(201, 107, 107, .4);
-      color: var(--cream);
-      font-family: var(--font-serif);
-      font-size: .82rem;
-      letter-spacing: .1em;
-      padding: .65rem 1.4rem;
-      border-radius: 2rem;
-      backdrop-filter: blur(10px);
-      z-index: 9999;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .3s ease, transform .3s ease;
-      white-space: nowrap;
-    }
-
-    #toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    /* ── FLOATING HEARTS ── */
-    .floating-heart {
-      position: fixed;
-      pointer-events: none;
-      z-index: 999;
-      font-size: 1.1rem;
-      opacity: 0;
-      transform: translate(-50%, -50%);
-    }
-
-    /* ── CLOSING ── */
-    #closing {
-      position: relative;
-      z-index: 1;
-      min-height: 75vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      min-height: 100vh;
+      padding: 4rem 2rem 3rem;
       text-align: center;
-      padding: 5rem 2rem;
-      overflow: hidden;
     }
 
-    .closing-bg {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse 70% 60% at 50% 50%, #4a1020 0%, #1a0a10 80%);
+    .hero-ornament {
+      width: 200px;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: rise 1.2s ease forwards 0.3s;
     }
 
-    .closing-content {
+    .hero-tag {
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-style: italic;
+      font-size: 1rem;
+      letter-spacing: 0.18em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: rise 1s ease forwards 0.6s;
+    }
+
+    .hero-title {
+      font-family: 'Noto Sans Myanmar', serif;
+      font-weight: 300;
+      font-size: clamp(2.4rem, 8vw, 4.4rem);
+      line-height: 1.25;
+      color: var(--rose-dk);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: rise 1s ease forwards 0.9s;
+    }
+
+    .hero-title span {
+      color: var(--rose);
+      font-weight: 500;
+    }
+
+    .hero-divider {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: rise 1s ease forwards 1.2s;
+    }
+
+    .hero-divider-line {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--rose));
+    }
+
+    .hero-divider-line.right {
+      background: linear-gradient(to left, transparent, var(--rose));
+    }
+
+    .hero-divider-heart {
+      color: var(--rose);
+      font-size: 1.1rem;
+    }
+
+    .hero-scroll-hint {
+      margin-top: 3rem;
+      color: var(--muted);
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-style: italic;
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      opacity: 0;
+      animation: rise 1s ease forwards 1.6s;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .hero-scroll-hint:hover { color: var(--rose); }
+
+    .scroll-arrow {
+      display: block;
+      margin: 0.5rem auto 0;
+      width: 18px;
+      height: 18px;
+      border-right: 1.5px solid var(--muted);
+      border-bottom: 1.5px solid var(--muted);
+      transform: rotate(45deg);
+      animation: bob 1.6s ease-in-out infinite;
+    }
+
+    @keyframes bob {
+      0%, 100% { transform: rotate(45deg) translateY(0); }
+      50%       { transform: rotate(45deg) translateY(5px); }
+    }
+
+    /* ── Letter section ── */
+    .letter-section {
       position: relative;
-      z-index: 2;
+      z-index: 1;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 6rem;
     }
 
-    .closing-eternity {
-      font-family: var(--font-display);
-      font-size: clamp(2.8rem, 8vw, 6rem);
-      color: var(--cream);
-      margin-bottom: 1.8rem;
-      text-shadow: 0 0 40px rgba(201, 107, 107, .4);
-      opacity: 0;
-      transform: scale(.85);
+    .letter-card {
+      background: #fffcf9;
+      border: 1px solid #ead5d8;
+      border-radius: 3px;
+      padding: 4rem 3.5rem;
+      position: relative;
+      box-shadow:
+        0 2px 0 #e8c8cc,
+        0 4px 0 #deb8bc,
+        0 1px 40px rgba(180, 100, 120, 0.06);
     }
 
-    .closing-verse {
-      font-family: var(--font-body);
-      font-size: clamp(.88rem, 2.2vw, 1.05rem);
-      color: var(--petal);
+    /* Paper fold top-right */
+    .letter-card::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 40px; height: 40px;
+      background: linear-gradient(225deg, var(--bg) 50%, #f0dde0 50%);
+      border-bottom-left-radius: 2px;
+    }
+
+    .letter-top-ornament {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .letter-top-ornament svg {
+      opacity: 0.35;
+    }
+
+    .letter-greeting {
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-style: italic;
+      font-size: 1.25rem;
+      color: var(--rose);
+      margin-bottom: 2rem;
+      letter-spacing: 0.03em;
+    }
+
+    .letter-body {
+      font-family: 'Noto Sans Myanmar', Georgia, serif;
+      font-weight: 300;
+      font-size: 1.05rem;
       line-height: 2.2;
-      max-width: 480px;
-      margin: 0 auto 2.2rem;
+      color: #3d2229;
+      text-align: justify;
+      hyphens: auto;
+    }
+
+    .letter-body p {
+      margin-bottom: 1.6rem;
+      text-indent: 1.5em;
+    }
+
+    .letter-body p:first-child { text-indent: 0; }
+
+    /* Pull-quote highlight */
+    .letter-highlight {
+      border-left: 2px solid var(--rose);
+      margin: 2rem 0;
+      padding: 0.6rem 0 0.6rem 1.5rem;
+      font-style: italic;
+      color: var(--rose-dk);
+      text-indent: 0 !important;
+    }
+
+    .letter-closing {
+      margin-top: 3rem;
+      text-align: right;
+    }
+
+    .letter-closing-text {
+      font-family: 'Noto Sans Myanmar', serif;
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .letter-signature {
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-style: italic;
+      font-size: 1.4rem;
+      color: var(--rose-dk);
+    }
+
+    /* ── Footer ── */
+    .footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 2rem 1rem 3rem;
+      color: var(--muted);
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-style: italic;
+      font-size: 0.9rem;
+    }
+
+    .footer-hearts {
+      letter-spacing: 0.5em;
+      color: var(--petal1);
+      margin-bottom: 0.5rem;
+    }
+
+    /* ── Animations ── */
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(28px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
     }
 
-    .closing-hearts {
-      font-size: 1.8rem;
-      letter-spacing: .5rem;
-      opacity: 0;
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
     }
 
-    /* ══════════════════════════════════════
-       MOBILE RESPONSIVE  ≤ 700px
-    ══════════════════════════════════════ */
-    @media (max-width: 700px) {
-
-      /* Move spine to the left edge */
-      .timeline-spine {
-        left: 28px;
-        transform: none;
-      }
-
-      /* Collapse to 2-col: thin spine col | card col */
-      .letter-block {
-        grid-template-columns: 56px 1fr;
-        grid-template-rows: auto;
-        padding: 0 1rem 0 0;
-        margin-bottom: 2.5rem;
-      }
-
-      /* Always: node in col 1, card in col 2 — regardless of alternating */
-      .letter-block .timeline-node {
-        grid-column: 1 !important;
-        grid-row: 1;
-        padding-top: 1.5rem;
-        align-items: center;
-      }
-
-      .letter-block .card {
-        grid-column: 2 !important;
-        grid-row: 1;
-      }
-
-      .letter-block .card-spacer {
-        display: none !important;
-      }
-
-      .node-month {
-        display: none;
-      }
-
-      .card {
-        padding: 1.4rem 1.1rem 1.2rem;
-      }
-
-      .card-heading {
-        font-size: 1.55rem;
-      }
-
-      .card-text {
-        font-size: .84rem;
-        line-height: 1.95;
-      }
-
-      .card-ornament {
-        font-size: 2.6rem;
-        top: .3rem;
-        right: .7rem;
-      }
-
-      .copy-btn {
-        font-size: .72rem;
-        padding: .45rem .9rem;
-      }
-
-      .hero-content {
-        padding: 2rem 1rem;
-      }
-
-      .section-header {
-        margin-bottom: 3rem;
-      }
-
-      #timeline {
-        padding: 4rem 0 3rem;
-      }
-    }
-
-    @media (max-width: 420px) {
-      .timeline-spine {
-        left: 22px;
-      }
-
-      .letter-block {
-        grid-template-columns: 44px 1fr;
-      }
-
-      .card {
-        padding: 1.2rem .95rem;
-      }
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .letter-card { padding: 2.5rem 1.5rem; }
+      .letter-body { font-size: 0.98rem; line-height: 2; }
     }
   </style>
 </head>
-
 <body>
 
-  <canvas id="starfield"></canvas>
-  <div id="toast">♥ Copied to clipboard</div>
+<!-- Floating petals -->
+<div class="petal-canvas" id="petals" aria-hidden="true"></div>
 
-  <!-- HERO -->
-  <section id="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-petals" id="petals-container"></div>
-    <div class="hero-content">
-      <p class="hero-subtitle" id="hs1">A Collection of Letters</p>
-      <h1 class="hero-title" id="ht1">Our Story</h1>
-      <div class="hero-line" id="hl1"></div>
-      <p class="hero-myanmar" id="hm1">ဘေဘီ့ ♥ မမ &nbsp;·&nbsp; တစ်လမှသည် ထာဝရ</p>
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+
+  <!-- SVG ornamental illustration -->
+  <svg class="hero-ornament" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <!-- Two intertwined rings -->
+    <circle cx="85"  cy="80" r="38" stroke="#c8607a" stroke-width="2" fill="none" opacity="0.6"/>
+    <circle cx="115" cy="80" r="38" stroke="#c9a04e" stroke-width="2" fill="none" opacity="0.6"/>
+    <!-- Heart in the center overlap -->
+    <path d="M100 95 C100 95 80 80 80 68 C80 60 88 55 94 60 C97 62 100 65 100 65 C100 65 103 62 106 60 C112 55 120 60 120 68 C120 80 100 95 100 95 Z"
+          fill="#c8607a" opacity="0.75"/>
+    <!-- Small decorative dots -->
+    <circle cx="52"  cy="80" r="3" fill="#c9a04e" opacity="0.4"/>
+    <circle cx="148" cy="80" r="3" fill="#c9a04e" opacity="0.4"/>
+    <circle cx="100" cy="30" r="2.5" fill="#c8607a" opacity="0.4"/>
+    <circle cx="100" cy="130" r="2.5" fill="#c8607a" opacity="0.4"/>
+    <!-- Petals around heart -->
+    <ellipse cx="72" cy="58" rx="6" ry="10" fill="#f2c4ce" opacity="0.5" transform="rotate(-35 72 58)"/>
+    <ellipse cx="128" cy="58" rx="6" ry="10" fill="#f2c4ce" opacity="0.5" transform="rotate(35 128 58)"/>
+    <ellipse cx="68" cy="100" rx="6" ry="10" fill="#f2c4ce" opacity="0.5" transform="rotate(35 68 100)"/>
+    <ellipse cx="132" cy="100" rx="6" ry="10" fill="#f2c4ce" opacity="0.5" transform="rotate(-35 132 100)"/>
+  </svg>
+
+  <p class="hero-tag">A letter with love · ချစ်ခြင်းမေတ္တာနှင့်</p>
+
+  <h1 class="hero-title">
+    Happy <span>11 Months</span><br>ပါမမ ♡
+  </h1>
+
+  <div class="hero-divider">
+    <span class="hero-divider-line"></span>
+    <span class="hero-divider-heart">✦</span>
+    <span class="hero-divider-line right"></span>
+  </div>
+
+  <div class="hero-scroll-hint" onclick="document.getElementById('letter').scrollIntoView({behavior:'smooth'})">
+    ဖတ်ရန်
+    <span class="scroll-arrow"></span>
+  </div>
+</section>
+
+<!-- ═══ LETTER ═══ -->
+<section id="letter" class="letter-section">
+  <div class="letter-card reveal">
+
+    <div class="letter-top-ornament">
+      <svg width="120" height="24" viewBox="0 0 120 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <line x1="0" y1="12" x2="45" y2="12" stroke="#c8607a" stroke-width="0.8"/>
+        <path d="M60 4 C60 4 52 12 60 20 C68 12 60 4 60 4Z" fill="#c8607a" opacity="0.7"/>
+        <line x1="75" y1="12" x2="120" y2="12" stroke="#c8607a" stroke-width="0.8"/>
+        <circle cx="50" cy="12" r="2" fill="#c9a04e" opacity="0.6"/>
+        <circle cx="70" cy="12" r="2" fill="#c9a04e" opacity="0.6"/>
+      </svg>
     </div>
-    <div class="scroll-cue" id="scroll-cue">
-      <span>Scroll</span>
-      <div class="scroll-arrow"></div>
+
+    <div class="letter-greeting">မမ ကိုချစ်သောဘေဘီ မှ —</div>
+
+    <div class="letter-body">
+      <p>Happy 11 months ပါမမ။ ဆယ့်တစ်လဆိုတဲ့အချိန်ကာလတစ်ခုတောင် ဘေဘီနဲ့မမတူတူဖြတ်သန်းကျော်ဖြတ်ခဲ့ပြီး ဖြစ်၏။ ဆယ့်နှစ်လ(ခေါ်)တစ်နှစ်ဆိုတဲ့အရာကလည်း မဝေးတော့တဲ့အနီးမှာရှိလေသည်။</p>
+
+      <p>မမကိုချစ်ကြောင်း၊ မမနဲ့မတော်လို့ပြတ်စဲသွားရင်ဆိုတဲ့အကြောင်း၊ မမနဲ့အနာဂတ်တွေအကြောင်း စသည်ဖြင့်အကြောင်းအရာရာအထွေထွေကလည်း ရှေ့လတွေမှာရေးခဲ့ပြီးဖြစ်တော့ ခုလအတွက် ဘာရေးလျှင်ကောင်းမည်ဆိုတာ စဉ်းစားရသည်မှာ မဝှက်တမ်းဝန်ခံရရင် အနည်းငယ်တော့ ခေါင်းစားရသည်။ ထို့အပြင်ဒီကာလအတွင်း မမနဲ့ပြဿနာဖြစ်ထားသည့်အကြောင်းအရာလည်းမရှိ၊ ခရီးသွားလာထားသည်လည်းမရှိ ဟိုဟိုဒီဒီလှည့်ပတ်လျှောက်သွားလျှောက်စားထားသည်သာရှိရာ ဘေဘီအဖို့ ဘာရေးရမည်မှာ ထပ်ဆင့်ခေါင်းစားစရာဖြစ်ချေတော့၏။</p>
+
+      <p>ဆိုချင်သည်မှာ ထွေရာလေးပါးထဲမှ တစ်ခုခုကိုတည်၍ ရေးလို့လည်းမရ။ ဘေဘီခေါင်းကိုက်ရလေတော့၏။ သို့သော် ဘေဘီ မမ့အတွက်တစ်လတစ်ကြိမ်ဖတ်ဖို့ စာရေးပေးချင်၏။ ထိုသည်ကား စိတ်ရင်းအမှန်တည်း။</p>
+
+      <p class="letter-highlight">မိမိအဖြစ်အား စာတိုက်အား စာမူမှန်မှန်အပ်နိုင်ဖို့ ကြိုးစားရသည့် စာရေးဆရာအဖြစ်တောင် ယှဉ်ထိုးတွေးတောမိ၏။ စာရေးဆရာက စာတိုက်အား စာမူမအပ်နိုင်သည့်အကြောင်း ဆင်ခြေပေးဖို့မတန်ရာချေ။</p>
+
+      <p>ထိုနည်းတူ ဘေဘီကလည်း မမကို ဒီလအတွက် အကြောင်းအရာကြီးကြီးမားမားမရှိ၍ ဆင်ခြေပေးက မမ ဒီလအတွက် စာဖတ်ရတော့မည်မဟုတ်။ မမ ဝမ်းနည်းမည်။</p>
+
+      <p>ဤတွင် ဘေဘီ့ခေါင်းထဲ အတွေးတစ်ခုဝင်လာ၏။ ထိုအတွေးကား ဒီလအတွင်း ဘေဘီမကြာခဏခံစားရသော ခံစားမှုအား အမှတ်ရအောင်လုပ်ပေးလိုက်သည်။ ထိုတွင် ဘေဘီပျော်လေပြီ။ ရေးစရာကုန်ကြမ်းရသွား၍ဖြစ်၏။</p>
+
+      <p>ဘေဘီခံစားမိသော ခံစားမှုဆိုသည်ကား မမနဲ့ခရီးတူတူသွားချင်သောစိတ်ခံစားမှုပင်ဖြစ်၏။ ထိုမှ စဉ်းစားမိသည်ကား မိမိတို့နှစ်ဦး ဗြိတိသျှခရီးသွားပြီးချိန်မှ ခုချိန်ထိတိုင် မည်သည့်ခရီးမှထွက်ကြရသေးသည်မှာ လေးလခန့်ရှိလေပြီတကား။ ထိုကြောင့် ခရီးတူတူထွက်ချင်စိတ်တောင့်တမိသည်ဖြစ်တန်ရာ၏။</p>
+
+      <p>ဆိုချင်သည်မှာ ဘေဘီ့အနေနှင့် မမနဲ့ခရီးထွက်ချင်စိတ် မည်သည့်အကြောင်းကြောင့်ဖြစ်မိသနည်း။ ဤမေးခွန်းကို ဖြေရမည်ဆိုလျှင် ဗြိတိသျှခရီးစဉ်ကို ပြန်လှန်တွေးတောဖို့လိုမည်ဖြစ်၏။ ထိုခရီးထွက်စဉ်က ဘေဘီနဲ့မမအတွက် အမှတ်တရများစွာကျန်ရစ်ခဲ့သော ခရီးစဉ်တစ်ခုဖြစ်ခဲ့၏။ နှစ်ယောက်သားပျော်ကြရ၏။ တစ်ဦးနှင့်တစ်ဦးရိုင်းပင်းကြ၏။ နေရာအသစ်များကို ရှာဖွေစူးစမ်းခဲ့ကြရာတွင် မိမိတို့နှစ်ဦး၏ အားတက်မှုကို ပေါ်လွင်စွာ တွေ့မြင်နိုင်၏။</p>
+
+      <p>ထိုသို့သောအခြင်းအရာများကို ပြန်လည်တွေးတောမိလျှင် မိမိတို့နှစ်ဦးမှာ မိမိတို့နှစ်ဦး၏ ပင်ကိုဗီဇ၌ပင် ခရီးသွားခြင်းအား နှစ်သက်ခုန်မင်သည်ကို တွေ့ရှိမိ၏။ ထို့ကြောင့်ပင် ဘေဘီစိတ်၌ ဒီလအတွင်း ရံဖန်ရံခါ တောင့်တမိသည်ဆိုမလား၊ စေ့ဆော်သည်ဆိုမလား ထွက်ပေါ်လာသော ခရီးသွားချင်သော အာသီသနှင့် အရင်မိမိတို့ ဗြိတိသျှခရီးသွားခဲ့စဉ်က ဘေဘီနဲ့မမ၏ ခရီးထွက်ရသောအပေါ် ခံစားခဲ့ရသော စိတ်ခံစားမှုများကြောင့် ခရီးတစ်ခုထွက်ကြလျှင်ကောင်းမလားဟု တွေးမိ၏။</p>
+
+      <p>ခရီးတစ်ခုလည်း များမကြာမီအချိန်တွင် မုချဧကန်ထွက်ဖြစ်မည်ဟုလည်း ဘေဘီယုံကြည်သည်။</p>
+
+      <p class="letter-highlight">ဆိုရလျှင် ဤဆယ့်တစ်လအတွင်း ဘေဘီနဲ့မမ ခရီးဟုခေါ်ဆိုဖို့ထိုက်တန်သည့် ခရီးတစ်ခုသာ ထွက်ခဲ့သည်ဖြစ်ရာ၊ ဒီလအတွင်းခံစားနေရသောခံစားမှုနှင့်ဆက်လျင်း၍လည်းကောင်း ဆုတစ်ခုအားစိတ်တွင်တောင်းမိ၏။</p>
+
+      <p>တောင်းမိသည့်ဆုမှာ ဘေဘီနှင့်မမသည်ကား ခုဆယ့်တစ်လမှသည် တစ်သက်လုံးတူတူဖြတ်သန်းနေထိုင်သွားမည်ဖြစ်ရာ နောင်ထိုအချိန်ကာလများတွင် နှစ်ယောက်သား အပူအပင်မရှိ၊ ပျော်ပျော်ရွှင်ရွှင်၊ ချမ်းချမ်းသာသာနှင့် နေရာအနှံအပြားကို ခရီးများတူတူသွားလို့ရရန်သာဖြစ်၏။</p>
     </div>
-  </section>
 
-  <!-- TIMELINE -->
-  <section id="timeline">
-    <div class="timeline-spine"></div>
-    <div class="section-header">
-      <h2>Month by Month</h2>
-      <p>ချစ်ခြင်းမေတ္တာ မှတ်တမ်း</p>
+    <div class="letter-closing">
+      <p class="letter-closing-text">ချစ်ခြင်းမေတ္တာဖြင့်</p>
+      <p class="letter-signature">မမကို ချစ်သောဘေဘီ ♡</p>
     </div>
-    <div id="letters-container"></div>
-  </section>
 
-  <!-- CLOSING -->
-  <section id="closing">
-    <div class="closing-bg"></div>
-    <div class="closing-content">
-      <h2 class="closing-eternity" id="ce">Forever &amp; Beyond</h2>
-      <p class="closing-verse" id="cv">
-        နှစ်လ… သုံးလ… ငါးလ…<br />
-        ခုနှစ်လ… ရှစ်လ… တစ်နှစ်…<br />
-        တစ်သက်… ထာဝရ…<br />
-        <em>သံသရာဘဝ အဆက်ဆက်</em>
-      </p>
-      <div class="closing-hearts" id="ch">♥ &nbsp; ♥ &nbsp; ♥</div>
-    </div>
-  </section>
+  </div>
+</section>
 
-  <script>
-    // ════════════════════════════════════════════
-    //  DATA  — full original text stored per letter
-    // ════════════════════════════════════════════
-    const letters = [
-      {
-        month: "1 Month", label: "Month One", title: "One Month",
-        closing: "တစ်လမှသည် တစ်သက်… ထာဝရ… သံသရာဘဝအဆက်ဆက်",
-        signature: "မမ့ကိုချစ်တဲ့ ဘေဘီ 😘🥰",
-        full: `မမ Happy 1 month ပါ ဟီးဟီး အများကြီးချစ်တယ် 🥰🥰။ ရည်းစားသက်တမ်းကတော့ တစ်လဘဲရှိသေးတယ်ပေါ့နော်၊ စတွေ့ကတည်းကဆိုရင်တော့ လေးလပေါ့။ သူအဖြေပေးဖို့မူနေလို့ တကယ်က (ဟဲဟဲ စတာ)။ ဘေဘီ့ကို အများကြီးချစ်ပေးတဲ့အတွက်ကျေးဇူးပါ။ ဘေဘီ့ဘဝမှာ မမလောက် ဘေဘီ့ကိုချစ်ပေးတဲ့ မိန်းကလေးမျိုးမတွေ့ဖူးဘူး။ မမကသာဘေဘီ့ကိုအချစ်တတ်ဆုံး၊ အချစ်ပေးဆုံး အမျိုးသမီးဘဲ။ အဲ့အတွက်လည်း မမ့ကို ပိုင်ဆိုင်ရတာ တန်ဖိုးရှိတယ်လို့ ခံစားရတယ်။ မမတန်ဖိုးကိုလည်း နားလည်တယ်။ မမ မရှိတဲ့ ဘေဘီ့ဘဝဆို ဘေဘီ ဘယ်လိုနေရမယ်တောင်မသိ။ ဘေဘီ အဆင်မပြေဆုံးအချိန်မှာ ရောက်လာတယ်၊ ဘေဘီ့ကို အကောင်းဆုံးဆိုတဲ့မျက်လုံးနဲ့ဘဲ မြင်တယ်၊ တခါတလေ ဘေဘီ့သာ မမ့နေရာမှာဆို မမ့က ဘေဘီ့ကိုချစ်ပေးသလို ချစ်နိုင်မလားတောင် သေချာမသိ၊ ကိုယ်နဲ့မသိတဲ့ သူစိမ်းတစ်ယောက်ကို သူအဆင်မပြေပါဘူးဆိုတဲ့အချိန်မှာ ရှာတွေ့ပြီးချစ်တာတဲ့ ထူးဆန်းတယ်။ ပြီးတော့ ခုကျ သူက အခု အဲ့သူစိမ်းရဲ့ ဒဏ်ရာတွေကို အရှင်းပျောက်အောင် ကုသပေးပြီးသွားပြီ။ တကယ် မမ့နဲ့ ရည်းစားဖြစ်ရတာ ဘေဘီ့အတွက်တော့ အဖိုးမဖြတ်နိုင်ဘူး။ ဘာလို့လဲဆိုရင် အထူးသဖြင့် မမ့ဘေဘီ့ကိုကြည့်တဲ့ပုံစံ၊ မြင်တဲ့ပုံစံ၊ ချစ်တဲ့ပုံစံက ဘေဘီ့အတွက် အဖိုးမဖြတ်နိုင်အောင် တန်ဖိုးရှိတယ်။ ဘေဘီ့ဘဝမှာ ကြုံဆုံခဲ့ဖူးတဲ့ ဘယ်မိန်းကလေးကမှ မမလိုမျိုး ဘေဘီ့ကို မချစ်ဖူးဘူး။ အဲ့တော့ အချစ်ခံရတယ်ခံစားရတယ်...ဟီးဟီး။ ချစ်ခံရလို့ နည်းနည်းတောင် ဘဝင်မြင့်ချင်တယ်။ ဘေဘီလည်း မမ့ကိုအများကြီးချစ်တယ်။ ဘေဘီနဲ့မမ ခုတစ်လမှတည်နောင် နှစ်ပေါင်းများစွာ၊ ဘဝပေါင်းများစွာ အခုထက်ပိုသောအချစ်များနဲ့ အများကြီးချစ်ပြီး ပျော်ပျော်ရွှင်ရွှင်နဲ့ နှစ်ယောက်တည်းကမ္ဘာလုပ်ရင်း အရာအာလုံးကို ဖြတ်သန်းကျော်လွှားချင်တယ်။ မမ့ကိုချစ်တဲ့ ဘေဘီ 😘🥰`
-      },
-      {
-        month: "2 Months", label: "Month Two", title: "Two Months",
-        closing: "နှစ်လမှသည် တစ်သက်… ထာဝရ… သံသရာဘဝအဆက်ဆက်",
-        signature: "မမ့ဘေဘီ",
-        full: `Happy 2 months ပါ မမ။ ဒီလမှာတော့ မမနဲ့ဘေဘီနဲ့ စပြီး နှစ်ယောက်တူတူနေဖြစ်ကြတယ်။ ဘေဘီနေစဉ်ဓူဝလှုပ်ရှားနေရတဲ့ ဒီနိုင်ငံမှာ ဘေဘီတို့တူတူနေတဲ့နေရာက ဘေဘီတို့နှစ်ယောက်ရဲ့ ကိုယ်ပိုင်အိမ်လေး မဟုတ်တည့်တိုင် မမနဲ့တူတူနေရတော့ ဘေဘီရဲ့အိမ်လို့ ခံစားရတယ်။ ဘေဘီ ခုနေနေတဲ့အိမ်လေးကလုံခြုံလွန်းလို့ ဘေဘီရဲ့ မမနဲ့အနာဂတ်ကို ဘေဘီ စိတ်ကူးယဉ်လို့မဆုံးဖြစ်ရတယ်။ ကိုယ့်အိမ်မဟုတ်သေးတဲ့ ဒီအိမ်မှာတောင် အိမ်ဒီလောက်ဆန်နေရင် ဘေဘီတို့နှစ်ယောက် စုဆောင်းပြီး တူတူဆောက်ကြမယ့် ဘေဘီတို့ရဲ့ ကိုယ်ပိုင်အိမ်လေးသာဆိုရင်…ဆိုပြီး ဘေဘီစိတ်ကူးယဉ်မိတယ်။ နောက်တစ်ခုကတော့ ဘေဘီတို့တူတူစနေပြီဆိုတော့ ဘေဘီတို့ကြားထဲ ညှိရတာတွေ၊ ပြဿနာတွေရှိလာပြီပေါ့။ ဘေဘီကတော့ အဲ့တာလေးတွေပေါ်လာတာ၊ ဖြစ်လာတာ သဘောကျတယ်။ အဲ့လိုတွေပေါ်လာမှာကလည်း သဘာဝဘဲလေ။ အဲ့တာတွေကို ဘေဘီနဲ့မမ နှစ်ယောက် တစ်ယောက်ကိုတစ်ယောက် အကောင်းဆုံးဖြေရှင်းပြီး ညှိယူနေတယ်လို့ ခံစားရတယ်။ တပြိုင်နက် နောက်ထပ်တစ်ခု ထပ်ခံစားရတာ ဘေဘီတို့နှစ်ယောက် တစ်ယောက်ကိုတစ်ယောက် ချစ်ကြလို့ ဒီလို တစ်ယောက်နဲ့တစ်ယောက် လက်ခံပြီး ညှိနှိုင်းဖြေရှင်းကြတာဘဲ လို့ ခံစားရတယ်။ ပြဿနာတွေ ဖြေရှင်းပြီးတိုင်း၊ ညှိစရာရှိတာတွေ ဖြေရှင်းပြီးတိုင်း မမနဲ့ဘေဘီ့ကြားထဲက ချည်နှောင်ထားတဲ့ ကြိုးလေးက ပိုပြီးတင်းလာတယ်၊ ခိုင်မာလာတယ်လို့ ခံစားရတယ်။ ဒီလိုပြဿနာတွေ၊ ညှိစရာတွေဖြစ်ပေါ်နေတာကို မကောင်းမမြင်ဘဲ ဒါငါတို့နှစ်ယောက်ကြားထဲ ပိုခိုင်မြဲဖို့ဘဲဆိုပြီး မမလည်းတွေးမယ်လို့ ဘေဘီထင်တယ်။ နောက်လည်း ဘာဖြစ်ဖြစ် ဘေဘီတို့ အရှုံးမပေး၊ အလျော့မပေးဘဲ ဘေဘီတို့နှစ်ယောက်ရဲ့ တည်ဆောက်ထားတဲ့ relationship ကို နှစ်ယောက်တူတူ ကာကွယ်ကြမယ်နော်။ ဘေဘီ့ကိုချစ်ပေးလို့ ကျေးဇူးပါမမ။ ဘေဘီ့အတွက် မမက ဘေဘီထားဖူးသမျှ ရည်းစားတွေထဲမှာ တန်ဖိုးမရှိဆုံးနဲ့ အရှားပါးဆုံး ဘေဘီ့ကိုအချစ်ပေးဆုံးလို့ အခံစားရဆုံး ရည်းစားဘဲ။ မမ့ကိုအများကြီးချစ်တယ်။ နှစ်လမှသည် တစ်သက်…၊ တစ်သက်မှသည် ထာဝရ…၊ ထာဝရမှသည် သံသရာဘဝအဆက်ဆက်…။ မမ့ဘေဘီ။`
-      },
-      {
-        month: "3 Months", label: "Month Three", title: "Three Months",
-        closing: "သုံးလမှသည် တစ်သက်… ထာဝရ… သံသရာဘဝအဆက်ဆက်",
-        signature: "ချစ်တဲ့မမ့ဘေဘီ",
-        full: `မမ Happy 3 months ပါ။ ဒီလမှာ ဘေဘီ မမနဲ့ ခွဲရတော့ ဘေဘီ့ဘဝမှာ မမ မရှိလို့မဖြစ်ဆိုတာ ဘေဘီပိုပြီး နားလည်လာတယ်။ မမရဲ့တန်ဖိုးကို ပိုသိလာတယ်။ မမ့ဟာ ဘေဘီ့အတွက် တန်ဖိုးဖြတ်လို့မရဘူးဆိုတာ…။ ဘေဘီ့လည်း မမနဲ့ ခွဲရတော့ အပြည့်မပျော်ဘူး၊ ဒီခရီးဟာ မမနဲ့အတူ သွားလို့ရရင်ဆိုတဲ့ အတွေးဝင်မိတယ်။ ဒါကလည်း မမနဲ့ဘေဘီရဲ့ အစဘဲရှိသေးတာကို။ ဘေဘီနဲ့မမနဲ့ အချိန်တစ်ခုရောက်လို့ နှစ်ဖက်အိမ်တွေကို အသိပေးပြီးရင် ဘေဘီတို့ တရားဝင်ဖြစ်ရင် ဘယ်မိဘ့ဆီ ဘယ်သူပြန်တွေ့တွေ့ လိုက်လို့ရပြီ။ ဘေဘီ့မှာ အဲ့လိုတွေဖြစ်ဖို့ စိတ်ကူးရှိတယ်၊ တကယ်အဟုတ်လည်းဖြစ်ရမယ်၊ မမနဲ့ဘေဘီနဲ့ နှစ်ယောက် လက်တွဲမဖြုတ်ဘဲ လျှောက်လှမ်းမယ်။ နောက်တစ်ခုက ဘေဘီနဲ့မမနဲ့ ခရီးရှည်မထွက်ရသေးဘူး။ ဒီခရီးကို ဘေဘီထွက်လာတော့ ဘေဘီဘေးနားမှာ မမ့က အရိပ်လေးလို ဘေဘီ့စိတ်ကူးထဲမှာ ရှိရလိုဝမ်းနည်းမိတယ်။ မမနဲ့တူတူ ခရီးရှည်ကြီးတွေ ထွက်ချင်စိတ်ဖြစ်မိတယ်၊ ငါတို့နှစ်ယောက် တူတူလက်တွဲပြီး ဒီလမ်းတွေ လျှောက်နေရရင်ဆိုတဲ့ အတွေးဖြစ်မိတယ်။ ဟိုရောက်ရင်လည်း အဲ့လိုခရီးရှည်တွေ မဖြစ်ဖြစ်အောင် ထွက်မယ်ဆိုပြီး စိတ်ပိုင်းဖြတ်ထားတယ်။ ဘေဘီနောက်ဆုံးပြောချင်တာကတော့ ဘေဘီမရှိတဲ့ ဒဗ္ဗလင်ဟာ မမအတွက်မလွယ်ကူသလိုဘဲ၊ မမမပါလာတဲ့ ဒီခရီးစဉ်ဟာလည်း ဘေဘီ့အတွက် မလွယ်ကူပါဘူး။ ဒီအချက်ကို မမ့ ပြန်သုံးသပ်ကြည့်ပါ။ မမနဲ့ဘေဘီ အဲ့လိုဖြစ်နေတာဟာ ဘေဘီနဲ့မမကြားက အချစ်ဟာ ခိုင်မာတယ်၊ သန်မာတယ်၊ နှစ်ယောက်လုံးက တစ်ယောက်ကိုတစ်ယောက် ချစ်ကြတယ်ဆိုတာ ပြတာဘဲ။ ဘေဘီမမ့ကိုအရမ်းချစ်တယ်၊ အရမ်းလွမ်းတယ်။ ဘေဘီ အဲ့ကိုပြန်ရောက်ရင် မမ့ကို အကြွေးဆပ်ပြီး အတိုးနဲ့ချစ်တယ်၊ လုပ်မယ်။ သုံးလမှသည် တစ်သက်…၊ တစ်သက်မှသည် ထာဝရ…၊ ထာဝရမှသည် သံသရာဘဝအဆက်ဆက်…။ ချစ်တဲ့မမ့ဘေဘီ။`
-      },
-      {
-        month: "4 Months", label: "Month Four", title: "Four Months",
-        closing: "လေးလမှသည် တစ်သက်… ထာဝရ… သံသရာဘဝအဆက်ဆက်",
-        signature: "ချစ်တဲ့ဘေဘီ",
-        full: `မမ Happy 4 months ပါ။ ဒီလအတွက်စာကတော့ မမ့ကို ကျေးဇူးတင်ကြောင်းပြောတဲ့ စာဖြစ်မယ်ထင်တယ်။ ပထမဆုံး ဘေဘီ့ကို နှစ်နှစ်ကာကာ၊ စစ်စစ်မှန်မှန် ချစ်ပေးလို့ ကျေးဇူးပါ။ ဘေဘီ့ကို ဂရုစိုက်ပေးလို့ ကျေးဇူးပါ။ ဘေဘီ့ကို အလျော့ပေးလို့ ကျေးဇူးပါ။ ဘေဘီ ဖြစ်ချင်တာတွေ လိုက်လို့ပေးတဲ့အတွက် ကျေးဇူးပါ။ ဘေဘီ့အတွက် လုံခြုံရာ ရင်ခွင်လေးတစ်စုံ ဖြစ်ပေးလို့ ကျေးဇူးပါ။ ဘေဘီ့အတွက် တိုင်ပင်ဖော်၊ တိုင်ပင်ဖက်ဖြစ်ပေးတဲ့အတွက် ကျေးဇူးပါ။ အစအစ အရာအရာ အများကြီးအတွက် ကျေးဇူးပါ။ မမနဲ့ ရည်းစားဖြစ်ပြီး မမနဲ့တူတူနေပြီးနောက် ဘေဘီ့မှာ ဘေဘီ့ အချစ်ရေး၊ အိမ်ထောင်ရေးအတွက် မေ့လို့ရလောက်တဲ့အထိ ကောင်မလေးဖြစ်ပေးလို့ ကျေးဇူးပါ။ တကယ်ဘေဘီ အဲ့ဒီဏ္ဍာ အတွက် တွေးစရာမလိုတော့ဘူး။ ခုမမနဲ့တူတူနေနေတယ်၊ အချိန်တစ်ခုရောက်ရင် အိမ်ကိုအသိပေးမယ်၊ ခုတူတူနေခဲ့သလို တရားဝင်တူတူဆက်နေမယ်။ ဘေဘီ့မှာ 'သူငါ့ကိုထားသွားမလား' ဆိုပြီး စိတ်ပူစရာမလိုအောင် မမက ချစ်ပေးလို့ ကျေးဇူးပါ။ အဲ့ထက်ပိုပြီး တန်ဖိုးထားကျေးဇူးတင်ရမှာက မမ့ကို ဘာနေနေ ဘေဘီ့နောက်ကို လိုက်မယ်ဆိုပြီး လက္ခဏာတွေပြတယ်၊ အဲ့တာ တကယ်ကျေနပ်ပြီး ဝမ်းသာဖို့ ကောင်းတာဘဲ။ အဲ့လိုပါရမီဖြည့်ပေးတဲ့အတွက်လည်း ကျေးဇူးပါ။ ဒီကျေးဇူးတင်ခဲ့တဲ့ အရာတွေက ဘေဘီတွေးမိသလောက်ပေါ့၊ ဘေဘီ မမ အဲ့ဒီ အရာကို လုပ်ဆောင်နေရင်တော့ စိတ်ထဲမှာ ကျေးဇူးတင်နေတယ်ဆိုမှာကတော့ စိတ်ထဲမှာ မှတ်ထားပေးပါ။ အဆုံးသတ်ရရင် ဘေဘီ့ကို အခုလို ချစ်ပေးတဲ့အတွက် ကျေးဇူးပါ။ ဘေဘီလည်း မမ့ကိုအရမ်းချစ်တယ်၊ တန်ဖိုးထားရပါတယ်။ ဘေဘီ့ရဲ့ အဖိုးတန်လေး…. လေးလမှသည် တစ်သက်…၊ တစ်သက်မှသည် ထာဝရ…၊ ထာဝရမှသည် သံသရာဘဝအဆက်ဆက်…။ ချစ်တဲ့ဘေဘီ။`
-      },
-      {
-        month: "5 Months", label: "Month Five", title: "Five Months",
-        closing: "ငါးလမှသည် တစ်သက်… ဘဝပေါင်းများစွာ ဖြတ်သန်းလိုပါ",
-        signature: "ချစ်တဲ့ဘေဘီ",
-        full: `မမ Happy 5 months ပါ။ ဘာလိုလိုနေ့ ဘေဘီတို့ ရည်းစားတွေဖြစ်တာ ငါးလတောင် ရှိသွားပြီဘဲ၊ ရှစ်လလို့ ရေချင်လည်းရေပါ. ဒီလတော့ 'မမကို ဘာလို့ချစ်တာလဲ' ဆိုတဲ့ ခဏခဏမေးတဲ့ မေးခွန်းကို ဖြေပေးတဲ့သဘောနဲ့ ဒီစာကိုရေးလိုက်မယ်နော် (နောက်တစ်ခါ ဒီမေးခွန်းထပ်မေးရင် ဒီစာသွားဖတ်လို့ပြောလို့ ရပြီ)။ ဘေဘီ့ ချစ်တယ်ဆိုတာဖြစ်ဖို့ ပထမဆုံး ဘေဘီကြိုက်တဲ့သူဖြစ်ဖို့ လိုမယ်၊ ဘေဘီကကြိုက်လို့ စိတ်ဝင်စားသွားရင် ချစ်လို့ရမရ စမ်းသပ်တယ် (နောက်တစ်ဆင့်ထပ်တာပေါ့)။ ဘယ်လိုစမ်းသပ်လဲကတော့ ရှင်းပါတယ် အထာပေးမယ်၊ စိတ်ဝင်စားကြောင်းပြမယ်၊ အဲ့အချိန်ကျ တစ်ဖက်ကဘာ အရိပ်အခြေပြလဲ ပေါ်မူတည်ပြီး ဘေဘီပြန်ချစ်မချစ် ဆုံးဖြတ်တယ်။ 'မမကို ဘာလို့ချစ်တာလဲ' ဆိုတဲ့ မေးခွန်းကို ပြန်ဆက်ရရင် ဘေဘီကြိုက်တဲ့ မမက ဘေဘီ့ကို တကယ်ချစ်တယ်ဆိုတာ ပြလို့ ဘေဘီကမမကိုချစ်တာ။ ဒါကတော့ ဝါကျတစ်ခုထဲမှာ ဆန့်အောင်ဖြေတာပေါ့။ အကျယ်ချဲ့ရရင်… ဘေဘီ မမ့ကိုကြိုက်လို့ လိုက်နေတဲ့ အချိန်မှာတောင် (မမ့ကိုယ်မမ ဘေဘီကို ချစ်လားမချစ်လား မသဲကွဲသေးတဲ့အချိန်မှာတောင်) မမ့က ဘေဘီ့ကို ဂရုစိုက်တယ်။ အားစိုက်ထုတ်တယ်။ အင်္ကျီလိုက်ဝယ်ပေးတာတို့၊ ဘေဘီ လုပ်ချင်တာတွေ လိုက်လို့ပေးတာတို့ (တချို့ မမမလုပ်ချင်တာတွေ လိုက်လုပ်ပေးလို့ ကျေးဇူးပါ) အဲ့တာတွေက ဘေဘီ့အတွက် ချစ်တယ်လို့ ခံစားရစေတယ်။ ပြီးတော့ မမနဲ့ဘေဘီ့ကြားမှာ အချစ်တွေ အပြန်အလှန်စီးဆင်းနေတယ်လို့ ခံစားရတယ်၊ တစ်ဖက်သတ်ဖြစ်မနေဘူး။ နောက်တစ်ချက်က ဘေဘီနဲ့မမနဲ့ တစ်ခုခုကိုလုပ်မယ်ဆို နှစ်ယောက်စလုံး လုပ်ချင်တဲ့နည်းက အများအားဖြင့်တူတယ်။ အကြိုက်တူတယ်။ အဲ့တာကလည်း တော်တော်အဆင်ပြေစေတယ်။ နေချင်တဲ့ပုံစံ၊ သွားချင်စားချင်တဲ့ ပုံစံက တော်တော်တူတယ်။ အဲ့တစ်ချက်ကြောင့်လည်း ဘေဘီ ပိုပြီးချစ်ရတယ် (ညှိစရာမလို၊ စကားများမနေရတာပေါ့)။ နောက်တစ်ချက် ဘေဘီ မမကိုချစ်တာက မမ့က ဘေဘီ့ကို သနားလို့။ ပြဿနာဖြစ်ရင်လည်း အကြာကြီးဖြစ်စရာမလိုဘူး ခဏဆို စိတ်ပြေသွားပြီ။ နောက်ပြီး ဘေဘီ့ကို အရှုံးဆုံးမခံနိုင်ဘူးဆိုတာကို ပြသတယ်။ တစ်ခုခုဆိုလည်း အလျော့ပေးတယ်။ ထိုသို့သောအကြောင်းများကြောင့် ဘေဘီ မမကို ချစ်ခင်ကြင်မက်ခြင်း အလျင်းဖြစ်ရပါ၏။ မလျော့သော ပို၍တိုးသောအချစ်များနဲ့ ခုငါးလမှသည်… အသက်ထက်ဆုံး… ဘဝအဆက်ဆက် ဖြတ်သန်းသွားလိုပါ၏။ ချစ်တဲ့ဘေဘီ…။`
-      },
-      {
-        month: "6 Months", label: "Month Six", title: "Six Months",
-        closing: "ခြောက်လမှသည် အသက်ထပ်ဆုံး… ဘဝပေါင်းများစွာ တူတူဖြတ်သန်းလိုပါ",
-        signature: "ချစ်တဲ့ဘေဘီ",
-        full: `Happy 6 months ပါမမ။ ဒီရက်ကတော့ ပြက္ခဒိန်ထဲမှာ ဘေဘီတို့ ခြောက်လပြည့်တဲ့လပေါ့။ ဘေဘီနဲ့မမရဲ့ ပြက္ခဒိန်လေး ဘယ်ချိန်မှာ ဖြစ်ပေါ်လာခဲ့လဲ။ ဘေဘီနဲ့မမ စတွေ့တဲ့ရက်ကစပြီး ပေါ်ပေါက်လာခဲ့တာပေါ့။ ခုဆို ဒီပြက္ခဒိန်လေးထဲမှာ အမှတ်တရလေးတွေ တစစီရောက်ရှိနေနှင့်ပြီးပေါ့။ ပြက္ခဒိန်လေးသက်တမ်းကလည်း ကိုးလတောင်ရှိရောလေ။ စတွေ့တဲ့ရက်၊ ဖွင့်ပြောတဲ့ရက်၊ အဖြေပေးတဲ့ရက် စသည်ဖြင့် ပြက္ခဒိန်လေးထဲ တစ်ခုခုပြီးတစ်ခုခု တိုးလာခဲ့ရာ ခုတော့ ဘေဘီတို့ပြက္ခဒိန်ထဲ ခြောက်လပြည့်ဆိုတဲ့ ရက်လေးတရက် ထပ်တိုးတာပေါ့။ ဘယ်တော့များရော ဘေဘီ မမကို လက်ထပ်ခွင့်တောင်းတဲ့နေ့၊ ဘေဘီနဲ့မမနဲ့ လက်ထပ်ဖြစ်မယ့်နေ့၊ နှစ်ယောက်တူတူ ကိုယ်ပိုင်အိမ်လေးပိုင်တဲ့နေ့၊ ပထမဆုံးကိုယ်ပွားလေးရမယ့်နေ့ စသည် အမှတ်ရစရာ အဖြစ်အပျက်တွေ ဘေဘီတို့ ပြက္ခဒိန်ထဲမှာ တိုးဝင်နေရာယူလာမလဲ။ ဘယ်နေ့တွေကရော ငွေရတု၊ ရွှေရတု၊ စိန်ရတုတွေ ဖြစ်လာမလဲ…။ တွေးမိတဲ့ အတွေးစတွေပေါ့။ အတွေးစတွေဆိုပေသိ မျှော်လင့်ချက်တွေ၊ တူတူဖြစ်ချင်တဲ့ ရည်မှန်းချက်တွေလို့ ပြောရင် ပိုမှန်မှာပေါ့လေ။ အဲ့ဒီ တောင်းဆုတွေ ပြည့်ပါစေ ဆုတောင်းရင်း ခြောက်လမှသည်…အသက်ထပ်ဆုံး….ဘဝပေါင်းများစွာ တူတူဖြတ်သန်းလိုပါသည်ဗျာ။ ချစ်တဲ့ဘေဘီ...။`
-      },
-      {
-        month: "7 Months", label: "Month Seven", title: "Seven Months",
-        closing: "ခုနစ်လမှသည် အသက်ထပ်ဆုံး… ဘဝပေါင်းများစွာ တူတူဖြတ်သန်းလိုပါ",
-        signature: "ချစ်တဲ့ဘေဘီ",
-        full: `Happy 7 months ပါမမ။ ပထမဆုံး ဒီလအတွက်စာရေးဖို့ နောက်ကျနေလို့ အနူးအညွှတ်တောင်းပန်ပါတယ်။ ဘေဘီ နေမကောင်းနေတာကတစ်ကြောင်း၊ ချစ်သူများနေ့ကိုဘဲ အာရုံများနေတာကတစ်ကြောင်း ဒီစာပေးဖို့ နောက်ကျသွားလို့ တောင်းပန်ပါတယ်။ နောက်လတွေ ဒီလိုနောက်မကျဖို့လည်း ကတိပေးပါတယ်။ ဘေဘီမမနဲ့ ယူကေကိုခရီးထွက်ရတာ အရမ်းပျော်တယ်။ ခရီးအတွင်းမှာ နှစ်ယောက်လုံး ချူခြာနေတော့ တစ်ယောက်ကိုတစ်ယောက် ဖေးမပေးတာတွေလည်း ချစ်တယ်။ အဲ့လိုပြောလို့ တူတူနေတဲ့ အချိန် နှစ်ယောက်က အပေးအယူမမျှနေဘူးလားလည်း မဟုတ်ဘူး။ တူတူနေတဲ့ အချိန်ဖြစ်ဖြစ်၊ ခရီးသွားတဲ့ အချိန်ဖြစ်ဖြစ်၊ ဘယ်အချိန်ဖြစ်ဖြစ် ဘေဘီနဲ့မမကြားမှာ တစ်ယောက်ကတစ်ခုခုဖြစ်ရင် တစ်ယောက်ကရှိနေပေးတယ်ဆိုတဲ့ အချက်ကို သဘောကျတယ်၊ တန်ဖိုးထားတယ်။ ဒါဟာလည်း ဘေဘီတို့နှစ်ယောက် အပြန်အလှန်ချစ်ခြင်းကြောင့် ဖြစ်ပေါ်လာတာ။ ဘေဘီ့ဘေးမှာ မမပျော်နေတာ မြင်ရတော့ ဘေဘီဝမ်းသာတယ်။ ဘေဘီ့က အဲ့လိုမျိုးကြည့်တယ်။ မမသတိထားမိလား၊ မထားမိလားတော့ ဘေဘီမသိဘူး။ ဒါပေမဲ့ ဘေဘီ မမကိုကြည့်တယ်။ မမ့ကို အမြဲတမ်း အပြုံးလေးတွေဘဲ ဆင်မြန်းပေးချင်တယ်။ ခရီးသွားတုန်းကဆို ခရီးသွားလို့ပျော်တာမျိုး၊ ခရီးအတွင်းမှာလည်း မမပျော်နေတယ်၊ ပြီးတော့ ဘေဘီ မမ့ကို ချစ်သူများနေ့အတွက် ညစာကျွေးတော့လည်း မမပျော်နေတယ်။ အဲ့လိုအပျော်မျိုးတွေ မမအတွက် ထပ်ပြီးဖန်တီးပေးချင်တယ်။ မမနဲ့တူတူ နောက်ထပ်ခရီးတွေ အများကြီးထပ်သွားချင်သေးတယ်၊ မမပျော်မယ့် တခြားအရာတွေလည်း တူတူလုပ်ချင်သေးတယ်။ မမ့ကို အိမ်ဝယ်ပေးရအုံးမယ်။ အဲ့ဒီ အိမ်ဝယ်ပေးတာကတော့ ဘေဘီမမအတွက် အကောင်းဆုံးလက်ဆောင်ပေးတယ်ဖြစ်နိုင်မလားပေါ့....။ မမ ကိုယ်ပိုင်အိမ်လေးလိုချင်သလို ဘေဘီ့အတွေးထဲမှာလည်း အဲ့ ကိုယ်ပိုင်အိမ်လေးမှာ မမရယ်၊ ဘေဘီရယ်၊ ဘေဘီတို့ ပစ္စည်းတွေရယ်၊ နောက်ကျ ဘေဘီတို့ ကိုယ်ပွားလေးတွေရယ်...ဘေဘီ အများကြီးစိတ်ကူးယဉ်ဖြစ်ပါတယ်။ အဲ့ စိတ်ကူးတွေလည်း တကယ်ဖြစ်လာအောင်၊ လက်တွေ့အကောင်အထည်ဖော်နိုင်အောင် တူတူကြိုးစားကြတာပေါ့။ မမချစ်တဲ့ မမကိုချစ်တဲ့ ဘေဘီနဲ့တူတူ…. ဒီလလည်း တူညီတဲ့တောင်းဆု၊ ဆုတောင်းပါဘဲ…. ခုနစ်လမှသည်… အသက်ထပ်ဆုံး…. ဘဝပေါင်းများစွာ တူတူဖြတ်သန်းလိုပါသည်...။ ချစ်တဲ့ဘေဘီ။`
-      },
-      {
-        month: "8 Months", label: "Month Eight", title: "Eight Months",
-        closing: "ရှစ်လကနေ နောင်နှစ်ပေါင်းများစွာ ဘဝအဆက်ဆက် တူတူလက်တွဲသွားရင်း…",
-        signature: "မမချစ်တဲ့ မမကိုချစ်တဲ့ ဘေဘီ",
-        full: `Happy 8 months ပါမမ။ ဒီလတော့ အရင်လတုန်းကလို နောက်မကျဘဲ ရေးထားတယ်နော်။ ဒီလထဲ မှတ်မှတ်ရရ မမ့အတွက်ရော၊ ဘေဘီ့အတွက်ရော တော်တော်ခံစားရတဲ့ စကားများရတဲ့ ကိစ္စတစ်ခုဖြစ်သွားခဲ့တယ်။ အဲ့ကိစ္စကို ပြဿနာလို့မမြင်ဘဲနဲ့ ဘေဘီနဲ့မမကြားထဲ မညှိရသေးတဲ့၊ မဖြစ်သေးဖူးတဲ့ ကိစ္စလို့ဘဲ မမ တွေးပေးပါ၊ ခုအဲ့ကိစ္စကို ဘေဘီတို့ ဖြေရှင်းပြီးပြီဆိုတော့ ဘေဘီ့အတွက်တော့ ဘေဘီနဲ့မမ့ကြားထဲ နားလည်စရာတစ်ခုပိုတိုးလာတယ်လို့ဘဲ တွေးတယ်။ ခုလို ပြဿနာဖြစ်သွားတော့ မညှိရသေးတဲ့ ကိစ္စတစ်ခု ညှိပြီး ဖြေရှင်းပြီးသွားတယ်လို့ ခံစားရတယ်။ အဲ့တာကြောင့်လည်း နောင်အနာဂတ်ကျ ဒီလိုမျိုးကိစ္စနဲ့ ပတ်သက်လာရင် ဘေဘီနဲ့မမ့ကြားထဲ တစ်ယောက်ကိုယ် တစ်ယောက် ပိုနားလည်နိုင်မယ်လို့ ယုံကြည်တယ်။ ပြီးတော့ ဘေဘီ့စိတ်ထဲ မမ့ကအမြဲရှိပါတယ်။ ဘေဘီဘာလုပ်လုပ် ဘေဘီ့စိတ်ထဲမှာ မမ့ရှိတယ်။ တစ်ခုခုဆိုလည်း ဘေဘီက မမ့ကို မြင်ယောင်တယ်။ ဘေဘီ့မှာ မမတစ်ယောက်ထဲဘဲ ရှိတာ။ မမ ဘာဖြစ်ဖြစ်ဆိုပြီးလည်း ဖြစ်ချင်ရာဖြစ်မလုပ်ဘူးရယ်။ အဲ့တော့ မမ့စိတ်ထဲ ဘေဘီကမချစ်တော့မှာတွေ၊ ဘာတွေ လျှောက်မတွေးနဲ့။ တကယ်ဖြစ်လာမှာမဟုတ်လို့ အဲ့လိုအရေမရ အဖတ်မရတွေ တွေးရင် မမဘဲ ပိုခံစားရလိမ့်မယ်။ ဒီလအတွက် မမ့ကို ဘာမှမလုပ်ပေးနိုင်တာ စိတ်ထဲမကောင်းဘူး။ စားသောက်ဆိုင်သွားတာတို့၊ မမ့ကို လက်ဆောင်ပေးတာတို့ကို ဖြစ်နိုင်ရင် လတိုင်းလုပ်ချင်တာ။ နောက်ပြီး မမရဲ့ ဖြစ်ချင်တဲ့ စိတ်ကူးတွေ၊ အိပ်မက်တွေကိုလည်း ဖြည့်ဆည်းပေးချင်တယ်။ ဒါပေမဲ့ ခုကျ အားမတန်တော့ မာန်လျော့ထားရတယ်။ ဒါပေမဲ့လည်း မမပြောနေကျ စကားအတိုင်း ဘေဘီနဲ့မမနဲ့က ခဏလေးတွဲကြမယ့် မတွေ့ကြမယ့်လူတွေမှ မဟုတ်တာ။ အဲ့တော့ နောက်ယောက် တူတူ ခုရှစ်လကနေ နောင်နှစ်ပေါင်းများစွာ ဘဝအဆက်ဆက် တူတူလက်တွဲသွားရင်း ကိုယ်စီ အိပ်မက်တွေ တကယ်ဖြစ်လာအောင် တူတူကြိုးစားကြတာပေါ့။ မမချစ်တဲ့ မမကိုချစ်တဲ့ ဘေဘီ။`
-      }
-    ];
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <p class="footer-hearts">♡ ♡ ♡</p>
+  <p>11 months &amp; counting · တစ်သက်လုံး</p>
+</footer>
 
-    // ════════════════════════════
-    //  STARFIELD
-    // ════════════════════════════
-    (function () {
-      const cv = document.getElementById('starfield');
-      const ctx = cv.getContext('2d');
-      let W, H, stars = [];
-      function resize() { W = cv.width = window.innerWidth; H = cv.height = window.innerHeight; }
-      function makeStars(n) {
-        stars = [];
-        for (let i = 0; i < n; i++) stars.push({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.2 + .2, a: Math.random(), sp: Math.random() * .003 + .001, ph: Math.random() * Math.PI * 2 });
-      }
-      let t = 0;
-      (function draw() {
-        ctx.clearRect(0, 0, W, H); t += .01;
-        stars.forEach(s => {
-          ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(253,246,238,${s.a * (.4 + .6 * Math.sin(t * s.sp * 60 + s.ph))})`;
-          ctx.fill();
-        });
-        requestAnimationFrame(draw);
-      })();
-      window.addEventListener('resize', () => { resize(); makeStars(200); }); resize(); makeStars(200);
-    })();
+<script>
+  // ── Falling petals ──
+  const canvas = document.getElementById('petals');
+  const colors = ['#e8a0b0','#f2c4ce','#fce8ec','#f5dde4','#dba0a8'];
+  const N = 18;
 
-    // ════════════════════════════
-    //  HERO ENTRANCE
-    // ════════════════════════════
-    window.addEventListener('load', () => {
-      anime.timeline({ easing: 'easeOutCubic' })
-        .add({ targets: '#hs1', opacity: [0, 1], translateY: [20, 0], duration: 900 })
-        .add({ targets: '#ht1', opacity: [0, 1], translateY: [30, 0], duration: 1100 }, '-=400')
-        .add({ targets: '#hl1', width: ['0px', '260px'], duration: 900 }, '-=500')
-        .add({ targets: '#hm1', opacity: [0, 1], translateY: [20, 0], duration: 800 }, '-=400')
-        .add({ targets: '#scroll-cue', opacity: [0, 1], duration: 600 }, '-=200');
-      spawnPetals();
-    });
+  for (let i = 0; i < N; i++) {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    const size = 8 + Math.random() * 14;
+    const left = Math.random() * 100;
+    const delay = Math.random() * 14;
+    const dur   = 10 + Math.random() * 12;
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const skew  = Math.random() > 0.5 ? `scaleX(${0.6 + Math.random() * 0.6})` : '';
 
-    // ════════════════════════════
-    //  PETALS
-    // ════════════════════════════
-    function spawnPetals() {
-      const wrap = document.getElementById('petals-container');
-      const cols = ['#f7dcd0', '#e8a598', '#c96b6b', '#e8d5a3', '#fdf6ee'];
-      function create() {
-        const el = document.createElement('div'); el.className = 'petal';
-        const sz = 8 + Math.random() * 14;
-        el.style.cssText = `left:${Math.random() * 110 - 5}%;top:-30px;width:${sz}px;height:${sz * 1.5}px;background:${cols[Math.floor(Math.random() * cols.length)]};opacity:0;`;
-        wrap.appendChild(el);
-        anime({ targets: el, translateY: ['-30px', (window.innerHeight + 60) + 'px'], translateX: [0, (Math.random() - .5) * 180], rotate: [0, Math.random() * 720 - 360], opacity: [{ value: .7, duration: 400 }, { value: 0, duration: 600, delay: 1400 }], duration: 4500 + Math.random() * 3500, easing: 'linear', complete: () => { el.remove(); create(); } });
-      }
-      for (let i = 0; i < 16; i++) setTimeout(create, i * 300);
-    }
+    p.style.cssText = `
+      width: ${size}px;
+      height: ${size * 0.7}px;
+      left: ${left}%;
+      background: ${color};
+      animation-duration: ${dur}s;
+      animation-delay: ${delay}s;
+      transform: ${skew};
+    `;
+    canvas.appendChild(p);
+  }
 
-    // ════════════════════════════
-    //  TOAST
-    // ════════════════════════════
-    let toastTimer;
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      t.textContent = msg; t.classList.add('show');
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
-    }
-
-    // ════════════════════════════
-    //  SVG ICONS
-    // ════════════════════════════
-    const ICON_COPY = `<svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;transition:transform .3s"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>`;
-    const ICON_CHECK = `<svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0"><polyline points="20 6 9 17 4 12"/></svg>`;
-
-    // ════════════════════════════
-    //  BUILD LETTERS
-    // ════════════════════════════
-    const lc = document.getElementById('letters-container');
-
-    letters.forEach((letter, i) => {
-      const block = document.createElement('div');
-      block.className = 'letter-block';
-
-      // Split on double newlines for paragraphs in the display text
-      // We use the first chunk of text as display (trimmed paragraphs)
-      const paraHTML = letter.full.split(/\n\n+/).map(p => `<p>${p.trim()}</p>`).join('');
-
-      const cardHTML = `
-    <div class="card">
-      <div class="card-ornament">♥</div>
-      <h3 class="card-heading">${letter.title}</h3>
-      <div class="card-divider"></div>
-      <div class="card-text">${paraHTML}</div>
-      <div class="card-closing">
-        <div>${letter.closing}</div>
-        <div class="card-signature">${letter.signature}</div>
-      </div>
-      <button class="copy-btn" data-idx="${i}" aria-label="Copy letter text">
-        ${ICON_COPY}<span class="btn-label">Copy Letter</span>
-      </button>
-    </div>`;
-
-      const nodeHTML = `
-    <div class="timeline-node">
-      <div class="node-dot"></div>
-      <div class="node-month">${letter.month}</div>
-    </div>`;
-
-      const spacerHTML = `<div class="card-spacer"></div>`;
-
-      // Even index → card on left; odd → card on right (desktop)
-      block.innerHTML = (i % 2 === 0)
-        ? cardHTML + nodeHTML + spacerHTML
-        : spacerHTML + nodeHTML + cardHTML;
-
-      lc.appendChild(block);
-    });
-
-    // ════════════════════════════
-    //  COPY BUTTON
-    // ════════════════════════════
-    document.addEventListener('click', e => {
-      const btn = e.target.closest('.copy-btn');
-      if (!btn) return;
-
-      const letter = letters[+btn.dataset.idx];
-      const text = `Happy ${letter.month} ပါမမ ♥\n\n${letter.full}\n\n${letter.closing}\n${letter.signature}`;
-
-      const doSuccess = () => {
-        btn.classList.add('copied');
-        btn.innerHTML = `${ICON_CHECK}<span class="btn-label">Copied ♥</span>`;
-        showToast('♥ Copied to clipboard');
-        setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = `${ICON_COPY}<span class="btn-label">Copy Letter</span>`; }, 2600);
-      };
-
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(doSuccess).catch(() => fallbackCopy(text, doSuccess));
-      } else {
-        fallbackCopy(text, doSuccess);
+  // ── Scroll reveal ──
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
       }
     });
+  }, { threshold: 0.12 });
 
-    function fallbackCopy(text, cb) {
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0;pointer-events:none;';
-      document.body.appendChild(ta); ta.focus(); ta.select();
-      try { document.execCommand('copy'); cb(); } catch (e) { showToast('Press Ctrl+C / ⌘+C to copy'); }
-      document.body.removeChild(ta);
-    }
+  reveals.forEach(el => io.observe(el));
+</script>
 
-    // ════════════════════════════
-    //  SCROLL REVEAL
-    // ════════════════════════════
-    const revObs = new IntersectionObserver(es => {
-      es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revObs.unobserve(e.target); } });
-    }, { threshold: .1 });
-    document.querySelectorAll('.letter-block').forEach(el => revObs.observe(el));
-
-    const clsObs = new IntersectionObserver(es => {
-      es.forEach(e => {
-        if (e.isIntersecting) {
-          anime.timeline({ easing: 'easeOutExpo' })
-            .add({ targets: '#ce', opacity: [0, 1], scale: [.85, 1], duration: 1000 })
-            .add({ targets: '#cv', opacity: [0, 1], translateY: [20, 0], duration: 900 }, '-=500')
-            .add({ targets: '#ch', opacity: [0, 1], duration: 700 }, '-=300');
-          clsObs.unobserve(e.target);
-        }
-      });
-    }, { threshold: .3 });
-    clsObs.observe(document.getElementById('closing'));
-
-    const dotObs = new IntersectionObserver(es => {
-      es.forEach(e => { if (e.isIntersecting) { anime({ targets: e.target, scale: [0, 1.3, 1], opacity: [0, 1], duration: 600, easing: 'easeOutElastic(1,.5)' }); dotObs.unobserve(e.target); } });
-    }, { threshold: .5 });
-    document.querySelectorAll('.node-dot').forEach(d => dotObs.observe(d));
-
-    // ════════════════════════════
-    //  PARALLAX HERO
-    // ════════════════════════════
-    window.addEventListener('scroll', () => {
-      const y = window.scrollY;
-      const hc = document.querySelector('.hero-content');
-      if (hc) { hc.style.transform = `translateY(${y * .35}px)`; hc.style.opacity = Math.max(0, 1 - y / 500); }
-    }, { passive: true });
-
-    // ════════════════════════════
-    //  CURSOR TRAIL (desktop only)
-    // ════════════════════════════
-    if (window.matchMedia('(pointer:fine)').matches) {
-      let lx = 0, ly = 0, th = 0;
-      document.addEventListener('mousemove', e => {
-        const now = Date.now(); if (now - th < 80) return; th = now;
-        if (Math.hypot(e.clientX - lx, e.clientY - ly) < 20) return;
-        lx = e.clientX; ly = e.clientY;
-        const h = document.createElement('div'); h.className = 'floating-heart'; h.textContent = '♥';
-        h.style.left = e.clientX + 'px'; h.style.top = e.clientY + 'px';
-        h.style.color = `hsl(${340 + Math.random() * 30},70%,70%)`;
-        document.body.appendChild(h);
-        anime({ targets: h, translateY: [0, -(40 + Math.random() * 50)], translateX: [(Math.random() - .5) * 30], opacity: [1, 0], scale: [.6, 1.1, 0], duration: 1200 + Math.random() * 400, easing: 'easeOutCubic', complete: () => h.remove() });
-      });
-    }
-  </script>
 </body>
-
 </html>
