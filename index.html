@@ -289,9 +289,74 @@
     }
 
     /* ── Responsive ── */
-    @media (max-width: 600px) {
-      .letter-card { padding: 2.5rem 1.5rem; }
-      .letter-body { font-size: 0.98rem; line-height: 2; }
+
+    /* Tablet (≤ 768px) */
+    @media (max-width: 768px) {
+      .hero { padding: 3rem 1.5rem 2.5rem; }
+      .hero-ornament { width: 160px; margin-bottom: 1.5rem; }
+      .hero-tag { font-size: 0.85rem; letter-spacing: 0.12em; }
+      .hero-scroll-hint { margin-top: 2rem; }
+
+      .letter-section { padding: 1.5rem 1rem 4rem; }
+      .letter-card { padding: 3rem 2.5rem; }
+      .letter-body { font-size: 1rem; line-height: 2.1; }
+      .letter-greeting { font-size: 1.1rem; }
+    }
+
+    /* Mobile (≤ 480px) */
+    @media (max-width: 480px) {
+      .hero { padding: 2.5rem 1.2rem 2rem; min-height: 100svh; }
+      .hero-ornament { width: 130px; margin-bottom: 1.2rem; }
+      .hero-tag {
+        font-size: 0.78rem;
+        letter-spacing: 0.08em;
+        /* prevent long bilingual tag from overflowing */
+        word-break: break-word;
+        padding: 0 0.5rem;
+      }
+      .hero-title { margin-bottom: 1rem; }
+      .hero-divider { gap: 0.8rem; margin-bottom: 1.8rem; }
+      .hero-divider-line { width: 40px; }
+      .hero-scroll-hint { margin-top: 1.5rem; font-size: 0.85rem; }
+
+      .letter-section { padding: 1rem 0.75rem 3rem; }
+      .letter-card {
+        padding: 2rem 1.2rem 2rem;
+        /* keep stacked-paper shadow visible */
+        box-shadow: 0 2px 0 #e8c8cc, 0 4px 0 #deb8bc, 0 1px 24px rgba(180,100,120,0.06);
+      }
+      /* Shrink the folded corner slightly on small screens */
+      .letter-card::before { width: 30px; height: 30px; }
+
+      .letter-top-ornament { margin-bottom: 1.8rem; }
+      .letter-greeting { font-size: 1rem; margin-bottom: 1.5rem; }
+
+      .letter-body {
+        font-size: 0.95rem;
+        line-height: 2;
+        /* left-align on narrow screens for better Myanmar script readability */
+        text-align: left;
+        hyphens: none;
+      }
+      .letter-body p { margin-bottom: 1.3rem; text-indent: 1.2em; }
+      .letter-highlight {
+        padding-left: 1rem;
+        margin: 1.5rem 0;
+        font-size: 0.93rem;
+      }
+
+      .letter-closing { margin-top: 2rem; }
+      .letter-closing-text { font-size: 0.88rem; }
+      .letter-signature { font-size: 1.2rem; }
+
+      .footer { padding: 1.5rem 1rem 2.5rem; font-size: 0.85rem; }
+    }
+
+    /* Very small (≤ 360px) */
+    @media (max-width: 360px) {
+      .hero-ornament { width: 110px; }
+      .letter-card { padding: 1.8rem 1rem; }
+      .letter-body { font-size: 0.9rem; }
     }
   </style>
 </head>
